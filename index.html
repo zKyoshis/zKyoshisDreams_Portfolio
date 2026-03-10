@@ -87,7 +87,7 @@ h1 em { font-style:italic; color:var(--pink); }
 .cloud-bubble img { width:100%; border-radius:10px; display:block; }
 .cloud-cta { display:block; text-align:center; font-size:0.78rem; font-weight:600; color:var(--pink-dark); margin-top:0.5rem; letter-spacing:0.04em; }
 
-.scroll-hint { position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:0.5rem; color:var(--text-light); font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; animation:fadeUp 1s ease 1.2s both; }
+.scroll-hint { position:absolute; bottom:2.5rem; left:calc(50% - 20px); transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:0.5rem; color:var(--text-light); font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; animation:fadeUp 1s ease 1.2s both; }
 .scroll-line { width:1px; height:44px; background:linear-gradient(to bottom,var(--pink-mid),transparent); animation:pulse 2s ease-in-out infinite; }
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
@@ -200,6 +200,27 @@ footer { padding:1.8rem 4rem; border-top:1px solid var(--pink-light); display:fl
   #fiverr-cloud{display:none;}
   #mc-char{display:none;}
 }
+
+/* LANG TOGGLE */
+#lang-toggle {
+  font-family:'DM Sans',sans-serif;
+  font-size:0.75rem;
+  font-weight:600;
+  letter-spacing:0.08em;
+  color:var(--text-mid);
+  background:transparent;
+  border:1.5px solid var(--pink-light);
+  border-radius:6px;
+  padding:0.28rem 0.6rem;
+  cursor:pointer;
+  transition:all 0.2s;
+  text-transform:uppercase;
+}
+#lang-toggle:hover {
+  border-color:var(--pink);
+  color:var(--pink);
+  background:var(--pink-blush);
+}
 </style>
 </head>
 <body>
@@ -215,8 +236,11 @@ footer { padding:1.8rem 4rem; border-top:1px solid var(--pink-light); display:fl
     <li><a href="#tools" onclick="closeMenu()">Tools</a></li>
     <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
   </ul>
-  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+  <div style="display:flex;align-items:center;gap:0.8rem;">
+    <button id="lang-toggle" onclick="toggleLang()">EN</button>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
+    </div>
   </div>
 </nav>
 
@@ -387,6 +411,7 @@ footer { padding:1.8rem 4rem; border-top:1px solid var(--pink-light); display:fl
 </footer>
 
 <script>
+let currentLang = 'it';
 const cur=document.getElementById('cursor'), ring=document.getElementById('cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
@@ -415,7 +440,7 @@ const canvas=document.getElementById('brush-canvas'),ctx=canvas.getContext('2d')
 function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
 resize();
 window.addEventListener('resize',()=>{resize();pts=buildPts();draw();});
-function buildPts(){const W=window.innerWidth,H=document.body.scrollHeight,pts=[],margin=W*0.13,swing=W*0.74,step=260;let y=100,right=true;while(y<H+step){pts.push({x:right?margin+swing:margin,y});y+=step;right=!right;}return pts;}
+function buildPts(){const W=window.innerWidth,H=document.body.scrollHeight,pts=[],margin=W*0.115,swing=W*0.75,step=260;let y=100,right=true;while(y<H+step){pts.push({x:right?margin+swing:margin,y});y+=step;right=!right;}return pts;}
 let pts=[];
 function init(){pts=buildPts();draw();}
 if(document.readyState==='complete'){init();}else{window.addEventListener('load',init);}
@@ -445,6 +470,8 @@ window.addEventListener('scroll',()=>{cancelAnimationFrame(raf);raf=requestAnima
 function copyDiscord(){
   navigator.clipboard.writeText('zkyo.shi_').then(()=>{
     const popup = document.getElementById('discord-popup');
+    const msg = currentLang === 'en' ? '💬 Discord username copied!' : '💬 Nick Discord copiato!';
+    popup.textContent = msg;
     popup.classList.add('show');
     setTimeout(()=>popup.classList.remove('show'), 2200);
   });
@@ -479,5 +506,167 @@ function copyDiscord(){
   transform: translateX(-50%) translateY(0);
 }
 </style>
+
+<script>
+// ── TRANSLATION DATA ──────────────────────────────────────────────
+const translations = {
+  it: {
+    'nav-about': 'About', 'nav-works': 'Works', 'nav-tools': 'Tools', 'nav-contact': 'Contact',
+    'lang-btn': 'EN',
+    'hero-tag': '✦ graphic designer & texture artist ✦',
+    'hero-h1': 'Dipingo<br>il mondo di <em>pixel</em>',
+    'hero-sub': 'Creo texture pack e skin Minecraft con cura artigianale, usando Blockbench e Aseprite per dare vita a universi visivi unici.',
+    'pill-1': '🟫 Blockbench', 'pill-2': '🎨 Aseprite', 'pill-3': '⛏️ Minecraft', 'pill-4': '✦ Pixel Art',
+    'about-label': '✦ chi sono',
+    'about-title': 'Una <em>artista</em><br>del pixel',
+    'about-p1': 'Sono una graphic designer appassionata di mondi virtuali. La mia specialità? Trasformare la griglia di Minecraft in <strong>tele d'arte pixellate</strong>, un blocco alla volta.',
+    'about-p2': 'Ogni texture pack racconta una storia. Curo ogni dettaglio per creare <strong>esperienze visive immersive</strong> che cambiano il modo in cui i giocatori vedono il loro mondo.',
+    'about-p3': 'Con Blockbench modello in 3D, con Aseprite dipingo pixel per pixel — due strumenti, un'unica visione creativa.',
+    'stat-label-1': 'Texture Pack', 'stat-label-2': 'Texture create', 'stat-label-3': 'Anni di pratica', 'stat-label-4': 'Risoluzione max',
+    'pixel-badge': '✦ Ogni pixel è intenzionale ✦',
+    'work-label': '✦ i miei lavori',
+    'work-title': 'Texture <em>Packs</em>',
+    'card-tag-1': '⭐ Featured', 'card-tag-2': 'Atmosferico', 'card-tag-3': 'Natura',
+    'card-tag-4': 'Medievale', 'card-tag-5': 'Acquatico', 'card-tag-6': 'Dark Mode',
+    'card-desc-1': 'Un texture pack ispirato all'estetica giapponese dei ciliegi in fiore. Palette rosa su rosa, ogni blocco è un petalo di sakura.',
+    'card-res-1': 'Risoluzione 32x — Java 1.20+',
+    'card-desc-2': 'Pietra e minerali ridisegnati con toni crepuscolari. Perfetto per build gotiche e dark fantasy.',
+    'card-desc-3': 'Erba, foglie e fiori ridisegnati con più contrasto. La natura di Minecraft come non l'hai mai vista.',
+    'card-desc-4': 'Pietra arenaria e legno dorato per build medievali di lusso. Warm tones ispirati all'architettura storica.',
+    'card-desc-5': 'Coralli, prismarine e pesci ridisegnati con dettagli ultra-precisi per build subacquee.',
+    'card-desc-6': 'UI e blocchi in versione scura con accenti rosa cosmici. Per chi gioca di notte con stile.',
+    'tools-label': '✦ il mio toolkit',
+    'tools-title': 'Con cosa <em>creo</em>',
+    'tool-desc-1': 'Modellazione 3D dei blocchi, creazione di mob customizzati e anteprima delle texture in tempo reale.',
+    'tool-desc-2': 'Il mio studio principale di pixel art. Creo ogni texture a mano con palette personalizzate e animazioni.',
+    'tool-desc-3': 'Test diretti nel gioco per valutare coerenza visiva, illuminazione e impatto in-game delle texture.',
+    'tool-desc-4': 'Palette building, teoria del colore applicata al pixel art e coerenza stilistica tra centinaia di texture.',
+    'contact-label': '✦ parliamo',
+    'contact-title': 'Vuoi una<br>skin o texture <em>custom</em>?',
+    'contact-p': 'Vuoi una skin Minecraft unica e dettagliatissima? Trovi i miei servizi su Fiverr — oppure scrivimi direttamente su Discord!',
+    'contact-btn-1': '🎨  Commissiona su Fiverr',
+    'contact-btn-2': '💬  zkyo.shi_ su Discord',
+    'footer-made': 'Fatto con 💗 e tanti pixel',
+    'cloud-label': '✦ disponibile su fiverr ✦',
+    'cloud-cta': 'Vedi il servizio →',
+    'scroll-hint': 'scroll',
+    'discord-popup': '💬 Nick Discord copiato!'
+  },
+  en: {
+    'nav-about': 'About', 'nav-works': 'Works', 'nav-tools': 'Tools', 'nav-contact': 'Contact',
+    'lang-btn': 'IT',
+    'hero-tag': '✦ graphic designer & texture artist ✦',
+    'hero-h1': 'Painting<br>the world in <em>pixels</em>',
+    'hero-sub': 'I craft Minecraft texture packs and skins with artisanal care, using Blockbench and Aseprite to bring unique visual universes to life.',
+    'pill-1': '🟫 Blockbench', 'pill-2': '🎨 Aseprite', 'pill-3': '⛏️ Minecraft', 'pill-4': '✦ Pixel Art',
+    'about-label': '✦ about me',
+    'about-title': 'A <em>pixel</em><br>artist',
+    'about-p1': 'I'm a graphic designer passionate about virtual worlds. My specialty? Turning Minecraft's grid into <strong>pixel art canvases</strong>, one block at a time.',
+    'about-p2': 'Every texture pack tells a story. I pay attention to every detail to create <strong>immersive visual experiences</strong> that change how players see their world.',
+    'about-p3': 'I model in 3D with Blockbench, paint pixel by pixel with Aseprite — two tools, one creative vision.',
+    'stat-label-1': 'Texture Packs', 'stat-label-2': 'Textures made', 'stat-label-3': 'Years of practice', 'stat-label-4': 'Max resolution',
+    'pixel-badge': '✦ Every pixel is intentional ✦',
+    'work-label': '✦ my work',
+    'work-title': 'Texture <em>Packs</em>',
+    'card-tag-1': '⭐ Featured', 'card-tag-2': 'Atmospheric', 'card-tag-3': 'Nature',
+    'card-tag-4': 'Medieval', 'card-tag-5': 'Aquatic', 'card-tag-6': 'Dark Mode',
+    'card-desc-1': 'A texture pack inspired by the Japanese aesthetic of cherry blossoms. Pink on pink palette, every block is a sakura petal.',
+    'card-res-1': '32x resolution — Java 1.20+',
+    'card-desc-2': 'Stone and minerals redrawn with twilight tones. Perfect for gothic and dark fantasy builds.',
+    'card-desc-3': 'Grass, leaves and flowers redrawn with more contrast. Minecraft nature like you've never seen it before.',
+    'card-desc-4': 'Sandstone and golden wood for luxury medieval builds. Warm tones inspired by historic architecture.',
+    'card-desc-5': 'Corals, prismarine and fish redrawn with ultra-precise details for underwater builds.',
+    'card-desc-6': 'UI and blocks in dark mode with cosmic pink accents. For those who play at night in style.',
+    'tools-label': '✦ my toolkit',
+    'tools-title': 'What I <em>create</em> with',
+    'tool-desc-1': '3D block modelling, custom mob creation and real-time texture preview.',
+    'tool-desc-2': 'My main pixel art studio. I craft every texture by hand with custom palettes and animations.',
+    'tool-desc-3': 'Direct in-game testing to evaluate visual consistency, lighting and in-game impact of textures.',
+    'tool-desc-4': 'Palette building, colour theory applied to pixel art and stylistic consistency across hundreds of textures.',
+    'contact-label': '✦ let's talk',
+    'contact-title': 'Want a<br>custom skin or texture?',
+    'contact-p': 'Looking for a unique, detailed Minecraft skin? Find my services on Fiverr — or message me directly on Discord!',
+    'contact-btn-1': '🎨  Commission on Fiverr',
+    'contact-btn-2': '💬  zkyo.shi_ on Discord',
+    'footer-made': 'Made with 💗 and lots of pixels',
+    'cloud-label': '✦ available on fiverr ✦',
+    'cloud-cta': 'View service →',
+    'scroll-hint': 'scroll',
+    'discord-popup': '💬 Discord username copied!'
+  }
+};
+
+function applyTranslation(lang) {
+  const t = translations[lang];
+  document.documentElement.lang = lang;
+
+  function set(sel, key, html=true) {
+    const el = document.querySelector(sel);
+    if (!el) { console.warn('NOT FOUND:', sel); return; }
+    if (html) el.innerHTML = t[key];
+    else el.textContent = t[key];
+  }
+  function setAll(sel, keys, html=true) {
+    const els = document.querySelectorAll(sel);
+    keys.forEach((k,i) => {
+      if (!els[i]) { console.warn('NOT FOUND index', i, ':', sel); return; }
+      if (html) els[i].innerHTML = t[k];
+      else els[i].textContent = t[k];
+    });
+  }
+
+  // Navbar
+  set('#lang-toggle', 'lang-btn', false);
+  setAll('.nav-links a', ['nav-about','nav-works','nav-tools','nav-contact'], false);
+
+  // Hero
+  set('.hero-tag', 'hero-tag');
+  set('h1', 'hero-h1');
+  set('.hero-sub', 'hero-sub');
+  setAll('.hero-pills .pill', ['pill-1','pill-2','pill-3','pill-4'], false);
+  set('.scroll-hint span', 'scroll-hint', false);
+
+  // Cloud
+  set('.cloud-label', 'cloud-label');
+  set('.cloud-cta', 'cloud-cta', false);
+
+  // About
+  set('#about .section-label', 'about-label');
+  set('#about .section-title', 'about-title');
+  setAll('#about .about-text p', ['about-p1','about-p2','about-p3']);
+  setAll('#about .stat-label', ['stat-label-1','stat-label-2','stat-label-3','stat-label-4'], false);
+  set('#about .pixel-badge', 'pixel-badge');
+
+  // Work
+  set('#work .section-label', 'work-label');
+  set('#work .section-title', 'work-title');
+  setAll('#work .card-tag', ['card-tag-1','card-tag-2','card-tag-3','card-tag-4','card-tag-5','card-tag-6']);
+  setAll('#work .card-desc', ['card-desc-1','card-res-1','card-desc-2','card-desc-3','card-desc-4','card-desc-5','card-desc-6']);
+
+  // Tools
+  set('#tools .section-label', 'tools-label');
+  set('#tools .section-title', 'tools-title');
+  setAll('#tools .tool-info p', ['tool-desc-1','tool-desc-2','tool-desc-3','tool-desc-4']);
+
+  // Contact
+  set('#contact .section-label', 'contact-label');
+  set('#contact .section-title', 'contact-title');
+  set('#contact .contact-box p', 'contact-p');
+  setAll('#contact .clink', ['contact-btn-1','contact-btn-2']);
+
+  // Footer
+  set('footer span', 'footer-made');
+
+  // Discord popup
+  set('#discord-popup', 'discord-popup', false);
+}
+
+
+function toggleLang() {
+  currentLang = currentLang === 'it' ? 'en' : 'it';
+  applyTranslation(currentLang);
+}
+</script>
+
 </body>
 </html>
