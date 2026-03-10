@@ -42,8 +42,9 @@ h1 { font-family:'Playfair Display',serif; font-size:clamp(3rem,8vw,6rem); font-
 h1 em { font-style:italic; color:var(--pink); }
 .hero-sub { font-size:1.05rem; color:var(--text-light); max-width:480px; line-height:1.75; margin:1.5rem auto 2.5rem; font-weight:300; animation:fadeUp 0.8s ease 0.6s both; }
 .hero-pills { display:flex; gap:0.8rem; justify-content:center; flex-wrap:wrap; animation:fadeUp 0.8s ease 0.8s both; }
-.pill { background:var(--white); border:1.5px solid var(--pink-mid); color:var(--text-mid); padding:0.45rem 1.1rem; border-radius:999px; font-size:0.82rem; font-weight:500; box-shadow:0 2px 10px rgba(232,114,154,0.1); transition:all 0.2s; position:relative; overflow:hidden; }
+.pill { background:var(--white); border:1.5px solid var(--pink-mid); color:var(--text-mid); padding:0.45rem 1.1rem; border-radius:999px; font-size:0.82rem; font-weight:500; box-shadow:0 2px 10px rgba(232,114,154,0.1); transition:all 0.2s; position:relative; overflow:hidden; cursor:pointer; }
 .pill:hover { background:var(--pink-blush); border-color:var(--pink); color:var(--pink-dark); transform:translateY(-2px); }
+.tool-card.highlight { outline:2.5px solid var(--pink); box-shadow:0 0 0 6px rgba(232,114,154,0.18); transition:outline 0.2s, box-shadow 0.2s; }
 
 /* CHARACTER */
 #mc-char {
@@ -241,10 +242,10 @@ footer { padding:1.8rem 4rem; border-top:1px solid var(--pink-light); display:fl
   <h1>Dipingo<br>il mondo di <em>pixel</em></h1>
   <p class="hero-sub">Creo texture pack e skin Minecraft con cura artigianale, usando Blockbench e Aseprite per dare vita a universi visivi unici.</p>
   <div class="hero-pills">
-    <span class="pill">🟫 Blockbench</span>
-    <span class="pill">🎨 Aseprite</span>
-    <span class="pill">⛏️ Minecraft</span>
-    <span class="pill">✦ Pixel Art</span>
+    <span class="pill" onclick="scrollToTool('tool-blockbench')">🟫 Blockbench</span>
+    <span class="pill" onclick="scrollToTool('tool-aseprite')">🎨 Aseprite</span>
+    <span class="pill" onclick="scrollToTool('tool-minecraft')">⛏️ Minecraft</span>
+    <span class="pill" onclick="scrollToTool('tool-pixelart')">✦ Pixel Art</span>
   </div>
   <div class="scroll-hint">
     <div class="scroll-line"></div>
@@ -349,19 +350,19 @@ footer { padding:1.8rem 4rem; border-top:1px solid var(--pink-light); display:fl
   <h2 class="section-title fade-up d1">Con cosa <em>creo</em></h2>
   <div class="section-line"></div>
   <div class="tools-grid">
-    <div class="tool-card fade-up">
+    <div class="tool-card fade-up" id="tool-blockbench">
       <div class="tool-icon">🟫</div>
       <div class="tool-info"><h3>Blockbench</h3><p>Modellazione 3D dei blocchi, creazione di mob customizzati e anteprima delle texture in tempo reale.</p><div class="skill-bar"><div class="skill-fill" data-w="92"></div></div></div>
     </div>
-    <div class="tool-card fade-up d1">
+    <div class="tool-card fade-up d1" id="tool-aseprite">
       <div class="tool-icon">🎨</div>
       <div class="tool-info"><h3>Aseprite</h3><p>Il mio studio principale di pixel art. Creo ogni texture a mano con palette personalizzate e animazioni.</p><div class="skill-bar"><div class="skill-fill" data-w="88"></div></div></div>
     </div>
-    <div class="tool-card fade-up d2">
+    <div class="tool-card fade-up d2" id="tool-minecraft">
       <div class="tool-icon">⛏️</div>
       <div class="tool-info"><h3>Minecraft Java</h3><p>Test diretti nel gioco per valutare coerenza visiva, illuminazione e impatto in-game delle texture.</p><div class="skill-bar"><div class="skill-fill" data-w="95"></div></div></div>
     </div>
-    <div class="tool-card fade-up d3">
+    <div class="tool-card fade-up d3" id="tool-pixelart">
       <div class="tool-icon">✦</div>
       <div class="tool-info"><h3>Color Theory</h3><p>Palette building, teoria del colore applicata al pixel art e coerenza stilistica tra centinaia di texture.</p><div class="skill-bar"><div class="skill-fill" data-w="85"></div></div></div>
     </div>
@@ -390,6 +391,13 @@ footer { padding:1.8rem 4rem; border-top:1px solid var(--pink-light); display:fl
 </footer>
 
 <script>
+function scrollToTool(id){
+  var el=document.getElementById(id);
+  if(!el) return;
+  el.scrollIntoView({behavior:'smooth', block:'center'});
+  el.classList.add('highlight');
+  setTimeout(function(){ el.classList.remove('highlight'); }, 1800);
+}
 const cur=document.getElementById('cursor'), ring=document.getElementById('cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
 if(cur && ring){
