@@ -377,7 +377,7 @@ footer { padding:1.8rem 4rem; border-top:1px solid var(--pink-light); display:fl
       <p>Vuoi una skin Minecraft unica e dettagliatissima? Trovi i miei servizi su Fiverr — oppure scrivimi direttamente su Discord!</p>
       <div class="contact-links">
         <a href="https://www.fiverr.com/s/GzYez87" target="_blank" class="clink clink-primary">🎨 &nbsp;Commissiona su Fiverr</a>
-        <button onclick="copyDiscord()" class="clink clink-secondary" style="border:none;cursor:none;width:100%;">💬 &nbsp;zkyo.shi_ su Discord</button>
+        <button onclick="copyDiscord()" class="clink clink-secondary" style="border:none;cursor:pointer;width:100%;">💬 &nbsp;zkyo.shi_ su Discord</button>
       </div>
     </div>
   </div>
@@ -392,12 +392,14 @@ footer { padding:1.8rem 4rem; border-top:1px solid var(--pink-light); display:fl
 <script>
 const cur=document.getElementById('cursor'), ring=document.getElementById('cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function loop(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
-document.querySelectorAll('a,button,.card,.tool-card').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(1.8)';});
-  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';});
-});
+if(cur && ring){
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+  (function loop(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+  document.querySelectorAll('a,button,.card,.tool-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(1.8)';});
+    el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';});
+  });
+}
 
 function toggleMenu(){document.getElementById('navLinks').classList.toggle('open');document.getElementById('hamburger').classList.toggle('open');}
 function closeMenu(){document.getElementById('navLinks').classList.remove('open');document.getElementById('hamburger').classList.remove('open');}
@@ -414,7 +416,7 @@ document.querySelectorAll('.about-card').forEach(el=>co.observe(el));
 const colors=['#f4a0be','#e8729a','#fce4ee','#f9c2d1','#d4547e'];
 for(let i=0;i<18;i++){const p=document.createElement('div');p.className='particle';const sz=Math.random()*8+4;p.style.cssText='width:'+sz+'px;height:'+sz+'px;left:'+(Math.random()*100)+'vw;top:'+(Math.random()*100+100)+'vh;background:'+colors[Math.floor(Math.random()*colors.length)]+';animation-duration:'+(Math.random()*12+8)+'s;animation-delay:'+(Math.random()*10)+'s';document.body.appendChild(p);}
 
-const canvas=document.getElementById('brush-canvas'),ctx=canvas.getContext('2d');
+const canvas=document.getElementById('brush-canvas'),ctx=canvas?canvas.getContext('2d'):null;
 function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
 resize();
 window.addEventListener('resize',()=>{resize();pts=buildPts();draw();});
@@ -424,7 +426,7 @@ function init(){pts=buildPts();draw();}
 if(document.readyState==='complete'){init();}else{window.addEventListener('load',init);}
 setTimeout(init,200);
 function draw(){
-  if(pts.length<2)return;
+  if(!ctx||pts.length<2)return;
   const scrollY=window.scrollY,maxScroll=Math.max(1,document.body.scrollHeight-window.innerHeight),progress=Math.min(1,scrollY/maxScroll*1.05);
   let totalLen=0;const segs=[];
   for(let i=1;i<pts.length;i++){const dx=pts[i].x-pts[i-1].x,dy=pts[i].y-pts[i-1].y,l=Math.sqrt(dx*dx+dy*dy);segs.push(l);totalLen+=l;}
@@ -459,84 +461,84 @@ var currentLang = "it";
 
 var T = {
   it: {
-    "lang-btn":        "EN",
-    "hero-h1":         "Dipingo<br>il mondo di <em>pixel</em>",
-    "hero-sub":        "Creo texture pack e skin Minecraft con cura artigianale, usando Blockbench e Aseprite per dare vita a universi visivi unici.",
-    "about-label":     "\u2736 chi sono",
-    "about-title":     "Una <em>artista</em><br>del pixel",
-    "about-p1":        "Sono una graphic designer appassionata di mondi virtuali. La mia specialit\u00e0? Trasformare la griglia di Minecraft in <strong>tele d\u2019arte pixellate</strong>, un blocco alla volta.",
-    "about-p2":        "Ogni texture pack racconta una storia. Curo ogni dettaglio per creare <strong>esperienze visive immersive</strong> che cambiano il modo in cui i giocatori vedono il loro mondo.",
-    "about-p3":        "Con Blockbench modello in 3D, con Aseprite dipingo pixel per pixel \u2014 due strumenti, un\u2019unica visione creativa.",
-    "stat-1":          "Texture Pack",
-    "stat-2":          "Texture create",
-    "stat-3":          "Anni di pratica",
-    "stat-4":          "Risoluzione max",
-    "pixel-badge":     "\u2736 Ogni pixel \u00e8 intenzionale \u2736",
-    "work-label":      "\u2736 i miei lavori",
-    "work-title":      "Texture <em>Packs</em>",
+    "lang-btn":       "EN",
+    "hero-h1":        "Dipingo<br>il mondo di <em>pixel</em>",
+    "hero-sub":       "Creo texture pack e skin Minecraft con cura artigianale, usando Blockbench e Aseprite per dare vita a universi visivi unici.",
+    "about-label":    "✦ chi sono",
+    "about-title":    "Una <em>artista</em><br>del pixel",
+    "about-p1":       "Sono una graphic designer appassionata di mondi virtuali. La mia specialità? Trasformare la griglia di Minecraft in <strong>tele d’arte pixellate</strong>, un blocco alla volta.",
+    "about-p2":       "Ogni texture pack racconta una storia. Curo ogni dettaglio per creare <strong>esperienze visive immersive</strong> che cambiano il modo in cui i giocatori vedono il loro mondo.",
+    "about-p3":       "Con Blockbench modello in 3D, con Aseprite dipingo pixel per pixel — due strumenti, un’unica visione creativa.",
+    "stat-1":         "Texture Pack",
+    "stat-2":         "Texture create",
+    "stat-3":         "Anni di pratica",
+    "stat-4":         "Risoluzione max",
+    "pixel-badge":    "✦ Ogni pixel è intenzionale ✦",
+    "work-label":     "✦ i miei lavori",
+    "work-title":     "Texture <em>Packs</em>",
     "ctag1":"⭐ Featured","ctag2":"Atmosferico","ctag3":"Natura","ctag4":"Medievale","ctag5":"Acquatico","ctag6":"Dark Mode",
-    "cdesc1":          "Un texture pack ispirato all\u2019estetica giapponese dei ciliegi in fiore. Palette rosa su rosa, ogni blocco \u00e8 un petalo di sakura.",
-    "cres1":           "Risoluzione 32x \u2014 Java 1.20+",
-    "cdesc2":          "Pietra e minerali ridisegnati con toni crepuscolari. Perfetto per build gotiche e dark fantasy.",
-    "cdesc3":          "Erba, foglie e fiori ridisegnati con pi\u00f9 contrasto. La natura di Minecraft come non l\u2019hai mai vista.",
-    "cdesc4":          "Pietra arenaria e legno dorato per build medievali di lusso. Warm tones ispirati all\u2019architettura storica.",
-    "cdesc5":          "Coralli, prismarine e pesci ridisegnati con dettagli ultra-precisi per build subacquee.",
-    "cdesc6":          "UI e blocchi in versione scura con accenti rosa cosmici. Per chi gioca di notte con stile.",
-    "tools-label":     "\u2736 il mio toolkit",
-    "tools-title":     "Con cosa <em>creo</em>",
-    "tdesc1":          "Modellazione 3D dei blocchi, creazione di mob customizzati e anteprima delle texture in tempo reale.",
-    "tdesc2":          "Il mio studio principale di pixel art. Creo ogni texture a mano con palette personalizzate e animazioni.",
-    "tdesc3":          "Test diretti nel gioco per valutare coerenza visiva, illuminazione e impatto in-game delle texture.",
-    "tdesc4":          "Palette building, teoria del colore applicata al pixel art e coerenza stilistica tra centinaia di texture.",
-    "contact-label":   "\u2736 parliamo",
-    "contact-title":   "Vuoi una<br>skin o texture <em>custom</em>?",
-    "contact-p":       "Vuoi una skin Minecraft unica e dettagliatissima? Trovi i miei servizi su Fiverr \u2014 oppure scrivimi direttamente su Discord!",
-    "cbtn1":           "\ud83c\udfa8&nbsp;Commissiona su Fiverr",
-    "cbtn2":           "\ud83d\udcac&nbsp;zkyo.shi_ su Discord",
-    "footer-txt":      "Fatto con \ud83d\udc97 e tanti pixel",
-    "cloud-label":     "\u2736 disponibile su fiverr \u2736",
-    "cloud-cta":       "Vedi il servizio \u2192",
-    "discord-msg":     "\ud83d\udcac Nick Discord copiato!"
+    "cdesc1":         "Un texture pack ispirato all’estetica giapponese dei ciliegi in fiore. Palette rosa su rosa, ogni blocco è un petalo di sakura.",
+    "cres1":          "Risoluzione 32x — Java 1.20+",
+    "cdesc2":         "Pietra e minerali ridisegnati con toni crepuscolari. Perfetto per build gotiche e dark fantasy.",
+    "cdesc3":         "Erba, foglie e fiori ridisegnati con più contrasto. La natura di Minecraft come non l’hai mai vista.",
+    "cdesc4":         "Pietra arenaria e legno dorato per build medievali di lusso. Warm tones ispirati all’architettura storica.",
+    "cdesc5":         "Coralli, prismarine e pesci ridisegnati con dettagli ultra-precisi per build subacquee.",
+    "cdesc6":         "UI e blocchi in versione scura con accenti rosa cosmici. Per chi gioca di notte con stile.",
+    "tools-label":    "✦ il mio toolkit",
+    "tools-title":    "Con cosa <em>creo</em>",
+    "tdesc1":         "Modellazione 3D dei blocchi, creazione di mob customizzati e anteprima delle texture in tempo reale.",
+    "tdesc2":         "Il mio studio principale di pixel art. Creo ogni texture a mano con palette personalizzate e animazioni.",
+    "tdesc3":         "Test diretti nel gioco per valutare coerenza visiva, illuminazione e impatto in-game delle texture.",
+    "tdesc4":         "Palette building, teoria del colore applicata al pixel art e coerenza stilistica tra centinaia di texture.",
+    "contact-label":  "✦ parliamo",
+    "contact-title":  "Vuoi una<br>skin o texture <em>custom</em>?",
+    "contact-p":      "Vuoi una skin Minecraft unica e dettagliatissima? Trovi i miei servizi su Fiverr — oppure scrivimi direttamente su Discord!",
+    "cbtn1":          "🎨&nbsp;Commissiona su Fiverr",
+    "cbtn2":          "💬&nbsp;zkyo.shi_ su Discord",
+    "footer-txt":     "Fatto con 💗 e tanti pixel",
+    "cloud-label":    "✦ disponibile su fiverr ✦",
+    "cloud-cta":      "Vedi il servizio →",
+    "discord-msg":    "💬 Nick Discord copiato!"
   },
   en: {
-    "lang-btn":        "IT",
-    "hero-h1":         "Painting<br>the world in <em>pixels</em>",
-    "hero-sub":        "I craft Minecraft texture packs and skins with artisanal care, using Blockbench and Aseprite to bring unique visual universes to life.",
-    "about-label":     "\u2736 about me",
-    "about-title":     "A <em>pixel</em><br>artist",
-    "about-p1":        "I am a graphic designer passionate about virtual worlds. My specialty? Turning Minecraft grids into <strong>pixel art canvases</strong>, one block at a time.",
-    "about-p2":        "Every texture pack tells a story. I pay attention to every detail to create <strong>immersive visual experiences</strong> that change how players see their world.",
-    "about-p3":        "I model in 3D with Blockbench, paint pixel by pixel with Aseprite \u2014 two tools, one creative vision.",
-    "stat-1":          "Texture Packs",
-    "stat-2":          "Textures made",
-    "stat-3":          "Years of practice",
-    "stat-4":          "Max resolution",
-    "pixel-badge":     "\u2736 Every pixel is intentional \u2736",
-    "work-label":      "\u2736 my work",
-    "work-title":      "Texture <em>Packs</em>",
+    "lang-btn":       "IT",
+    "hero-h1":        "Painting<br>the world in <em>pixels</em>",
+    "hero-sub":       "I craft Minecraft texture packs and skins with artisanal care, using Blockbench and Aseprite to bring unique visual universes to life.",
+    "about-label":    "✦ about me",
+    "about-title":    "A <em>pixel</em><br>artist",
+    "about-p1":       "I am a graphic designer passionate about virtual worlds. My specialty? Turning Minecraft grids into <strong>pixel art canvases</strong>, one block at a time.",
+    "about-p2":       "Every texture pack tells a story. I pay attention to every detail to create <strong>immersive visual experiences</strong> that change how players see their world.",
+    "about-p3":       "I model in 3D with Blockbench, paint pixel by pixel with Aseprite — two tools, one creative vision.",
+    "stat-1":         "Texture Packs",
+    "stat-2":         "Textures made",
+    "stat-3":         "Years of practice",
+    "stat-4":         "Max resolution",
+    "pixel-badge":    "✦ Every pixel is intentional ✦",
+    "work-label":     "✦ my work",
+    "work-title":     "Texture <em>Packs</em>",
     "ctag1":"⭐ Featured","ctag2":"Atmospheric","ctag3":"Nature","ctag4":"Medieval","ctag5":"Aquatic","ctag6":"Dark Mode",
-    "cdesc1":          "A texture pack inspired by the Japanese aesthetic of cherry blossoms. Pink on pink palette, every block is a sakura petal.",
-    "cres1":           "32x resolution \u2014 Java 1.20+",
-    "cdesc2":          "Stone and minerals redrawn with twilight tones. Perfect for gothic and dark fantasy builds.",
-    "cdesc3":          "Grass, leaves and flowers redrawn with more contrast. Minecraft nature like you have never seen it.",
-    "cdesc4":          "Sandstone and golden wood for luxury medieval builds. Warm tones inspired by historic architecture.",
-    "cdesc5":          "Corals, prismarine and fish redrawn with ultra-precise details for underwater builds.",
-    "cdesc6":          "UI and blocks in dark mode with cosmic pink accents. For those who play at night in style.",
-    "tools-label":     "\u2736 my toolkit",
-    "tools-title":     "What I <em>create</em> with",
-    "tdesc1":          "3D block modelling, custom mob creation and real-time texture preview.",
-    "tdesc2":          "My main pixel art studio. I craft every texture by hand with custom palettes and animations.",
-    "tdesc3":          "Direct in-game testing to evaluate visual consistency, lighting and in-game impact of textures.",
-    "tdesc4":          "Palette building, colour theory applied to pixel art and stylistic consistency across hundreds of textures.",
-    "contact-label":   "\u2736 let\u2019s talk",
-    "contact-title":   "Want a<br>custom skin or texture?",
-    "contact-p":       "Looking for a unique, detailed Minecraft skin? Find my services on Fiverr \u2014 or message me directly on Discord!",
-    "cbtn1":           "\ud83c\udfa8&nbsp;Commission on Fiverr",
-    "cbtn2":           "\ud83d\udcac&nbsp;zkyo.shi_ on Discord",
-    "footer-txt":      "Made with \ud83d\udc97 and lots of pixels",
-    "cloud-label":     "\u2736 available on fiverr \u2736",
-    "cloud-cta":       "View service \u2192",
-    "discord-msg":     "\ud83d\udcac Discord username copied!"
+    "cdesc1":         "A texture pack inspired by the Japanese aesthetic of cherry blossoms. Pink on pink palette, every block is a sakura petal.",
+    "cres1":          "32x resolution — Java 1.20+",
+    "cdesc2":         "Stone and minerals redrawn with twilight tones. Perfect for gothic and dark fantasy builds.",
+    "cdesc3":         "Grass, leaves and flowers redrawn with more contrast. Minecraft nature like you have never seen it.",
+    "cdesc4":         "Sandstone and golden wood for luxury medieval builds. Warm tones inspired by historic architecture.",
+    "cdesc5":         "Corals, prismarine and fish redrawn with ultra-precise details for underwater builds.",
+    "cdesc6":         "UI and blocks in dark mode with cosmic pink accents. For those who play at night in style.",
+    "tools-label":    "✦ my toolkit",
+    "tools-title":    "What I <em>create</em> with",
+    "tdesc1":         "3D block modelling, custom mob creation and real-time texture preview.",
+    "tdesc2":         "My main pixel art studio. I craft every texture by hand with custom palettes and animations.",
+    "tdesc3":         "Direct in-game testing to evaluate visual consistency, lighting and in-game impact of textures.",
+    "tdesc4":         "Palette building, colour theory applied to pixel art and stylistic consistency across hundreds of textures.",
+    "contact-label":  "✦ let’s talk",
+    "contact-title":  "Want a<br>custom skin or texture?",
+    "contact-p":      "Looking for a unique, detailed Minecraft skin? Find my services on Fiverr — or message me directly on Discord!",
+    "cbtn1":          "🎨&nbsp;Commission on Fiverr",
+    "cbtn2":          "💬&nbsp;zkyo.shi_ on Discord",
+    "footer-txt":     "Made with 💗 and lots of pixels",
+    "cloud-label":    "✦ available on fiverr ✦",
+    "cloud-cta":      "View service →",
+    "discord-msg":    "💬 Discord username copied!"
   }
 };
 
@@ -546,41 +548,41 @@ function toggleLang() {
 
   function s(sel, key, asHTML) {
     var el = document.querySelector(sel);
-    if (!el) return;
+    if (!el) { console.log("MISS:", sel); return; }
     if (asHTML) el.innerHTML = t[key]; else el.textContent = t[key];
   }
   function sAll(sel, keys, asHTML) {
     var els = document.querySelectorAll(sel);
     for (var i = 0; i < keys.length; i++) {
-      if (!els[i]) continue;
+      if (!els[i]) { console.log("MISS["+i+"]:", sel); continue; }
       if (asHTML) els[i].innerHTML = t[keys[i]]; else els[i].textContent = t[keys[i]];
     }
   }
 
-  s("#lang-toggle",              "lang-btn",       false);
-  s("h1",                        "hero-h1",        true);
-  s(".hero-sub",                 "hero-sub",       false);
-  s("#about .section-label",     "about-label",    false);
-  s("#about .section-title",     "about-title",    true);
-  s("#about .pixel-badge",       "pixel-badge",    false);
-  s("#work .section-label",      "work-label",     false);
-  s("#work .section-title",      "work-title",     true);
-  s("#tools .section-label",     "tools-label",    false);
-  s("#tools .section-title",     "tools-title",    true);
-  s("#contact .section-label",   "contact-label",  false);
-  s("#contact .section-title",   "contact-title",  true);
-  s("#contact .contact-box > p", "contact-p",      false);
-  s(".cloud-label",              "cloud-label",    false);
-  s(".cloud-cta",                "cloud-cta",      false);
-  s("footer span",               "footer-txt",     false);
-  s("#discord-popup",            "discord-msg",    false);
+  s("#lang-toggle",             "lang-btn",    false);
+  s("h1",                       "hero-h1",     true);
+  s(".hero-sub",                "hero-sub",    false);
+  s("#about .section-label",    "about-label", false);
+  s("#about .section-title",    "about-title", true);
+  s("#about .pixel-badge",      "pixel-badge", false);
+  s("#work .section-label",     "work-label",  false);
+  s("#work .section-title",     "work-title",  true);
+  s("#tools .section-label",    "tools-label", false);
+  s("#tools .section-title",    "tools-title", true);
+  s("#contact .section-label",  "contact-label", false);
+  s("#contact .section-title",  "contact-title", true);
+  s("#contact .contact-box p",  "contact-p",   false);
+  s(".cloud-label",             "cloud-label", false);
+  s(".cloud-cta",               "cloud-cta",   false);
+  s("footer span",              "footer-txt",  false);
+  s("#discord-popup",           "discord-msg", false);
 
-  sAll("#about .about-text p",   ["about-p1","about-p2","about-p3"], true);
-  sAll("#about .stat-label",     ["stat-1","stat-2","stat-3","stat-4"], false);
-  sAll("#work .card-tag",        ["ctag1","ctag2","ctag3","ctag4","ctag5","ctag6"], false);
-  sAll("#work .card-desc",       ["cdesc1","cres1","cdesc2","cdesc3","cdesc4","cdesc5","cdesc6"], false);
-  sAll("#tools .tool-info p",    ["tdesc1","tdesc2","tdesc3","tdesc4"], false);
-  sAll("#contact .clink",        ["cbtn1","cbtn2"], true);
+  sAll("#about .about-text p",  ["about-p1","about-p2","about-p3"], true);
+  sAll("#about .stat-label",    ["stat-1","stat-2","stat-3","stat-4"], false);
+  sAll("#work .card-tag",       ["ctag1","ctag2","ctag3","ctag4","ctag5","ctag6"], false);
+  sAll("#work .card-desc",      ["cdesc1","cres1","cdesc2","cdesc3","cdesc4","cdesc5","cdesc6"], false);
+  sAll("#tools .tool-info p",   ["tdesc1","tdesc2","tdesc3","tdesc4"], false);
+  sAll("#contact .clink",       ["cbtn1","cbtn2"], true);
 }
 
 </script>
